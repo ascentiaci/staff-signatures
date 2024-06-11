@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signature</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div id="signature" class="signature-container">
+        <div class="logo-container">
+            <img src="images/elevare.png" alt="Elevare Logo" id="elevareLogo" class="logo d-none">
+            <img src="images/ascentia.png" alt="Ascentia Logo" id="ascentiaLogo" class="logo d-none">
+        </div>
+        <div class="details-container">
+            <p id="name-title" class="signature-name-title"><span id="name" class="signature-name">John Doe</span> | <span id="title" class="signature-title">Title</span></p>
+            <p><strong class="detail-label">p:</strong> <span id="phone" class="signature-phone">Phone</span></p>
+            <p><strong class="detail-label">e:</strong> <span id="email" class="signature-email">Email</span></p>
+            <p><strong class="detail-label">w:</strong> <span id="website" class="signature-website">Website</span></p>
+            <p><strong class="detail-label">a:</strong> <span id="address" class="signature-address">Address</span></p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const queries = new URLSearchParams(window.location.search);
+
+            const instituteData = {
+                elevare: {
+                    logoId: 'elevareLogo',
+                    phone: '250-999-8736',
+                    emailDomain: 'elevareci.ca',
+                    website: 'www.elevareci.ca',
+                    address: '200 - 1690 Water Street, Kelowna, BC V1Y 8T8',
+                    colorClass: 'elevare-colors'
+                },
+                ascentia: {
+                    logoId: 'ascentiaLogo',
+                    phone: '250-999-8733',
+                    emailDomain: 'ascentiaci.ca',
+                    website: 'www.ascentiaci.ca',
+                    address: '301 -1680 Water Street, Kelowna, BC V1Y 8T8',
+                    colorClass: 'ascentia-colors'
+                }
+            };
+
+            const institute = queries.get('institute');
+            const name = queries.get('name');
+            const title = queries.get('title');
+            let email = queries.get('email');
+
+            if (institute && instituteData[institute]) {
+                const data = instituteData[institute];
+                document.getElementById(data.logoId).classList.remove('d-none');
+                document.getElementById('phone').innerText = data.phone;
+                document.getElementById('website').innerText = data.website;
+                document.getElementById('address').innerText = data.address;
+                document.getElementById('signature').classList.add(data.colorClass);
+
+                if (!email) {
+                    email = name.split(' ')[0].toLowerCase();
+                }
+                document.getElementById('email').innerText = `${email}@${data.emailDomain}`;
+            }
+
+            if (name) {
+                document.getElementById('name').innerText = name;
+            }
+
+            if (title) {
+                document.getElementById('title').innerText = title;
+            }
+        });
+    </script>
+</body>
+</html>

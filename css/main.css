@@ -1,0 +1,90 @@
+/* Define color variables */
+:root {
+    --elevare-color: #1A73E8; /* Example blue color */
+    --ascentia-color: #A52A2A; /* Example brown color */
+    --title-color: grey;
+}
+
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    margin: auto;
+}
+
+.form-container label, .form-container input, .form-container select, .form-container button {
+    margin-bottom: 10px;
+}
+
+.signature-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    text-align: left;
+}
+
+.logo-container {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.logo {
+    display: block;
+    width: 200px;
+    height: auto;
+}
+
+.details-container {
+    padding-left: 0;
+}
+
+.signature-name-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    text-transform: lowercase;
+    font-weight: bold;
+}
+
+.elevare-colors .detail-label {
+    color: var(--elevare-color);
+}
+
+.elevare-colors .signature-name {
+    color: var(--elevare-color);
+    font-weight: bold;
+}
+
+.elevare-colors .signature-title {
+    color: var(--title-color);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ascentia-colors .detail-label {
+    color: var(--ascentia-color);
+}
+
+.ascentia-colors .signature-name {
+    color: var(--ascentia-color);
+    font-weight: bold;
+}
+
+.ascentia-colors .signature-title {
+    color: var(--title-color);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.d-none {
+    display: none;
+}
