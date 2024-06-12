@@ -48,6 +48,12 @@ body {
 .signature-name-title {
     font-size: 20px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.signature-name-title .separator {
+    margin: 0 8px;
 }
 
 .detail-label {

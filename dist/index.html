@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Signature</title>
+    <link rel="stylesheet" type="text/css" href="/index.47ca9330.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <a href="/sig.html" class="d-none"></a>
+    <form id="signatureForm" class="form-container">
+        <label for="institute">Institute:</label>
+        <select id="institute" name="institute" required="">
+            <option value="elevare">Elevare Career Institute</option>
+            <option value="ascentia">Ascentia Career Institute</option>
+        </select>
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required="">
+        
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required="">
+        
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email">
+        
+        <button type="submit">Generate Signature</button>
+    </form>
+
+    <script>document.getElementById("signatureForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const institute = document.getElementById("institute").value;
+    const name = encodeURIComponent(document.getElementById("name").value);
+    const title = encodeURIComponent(document.getElementById("title").value);
+    let email = document.getElementById("email").value;
+    if (!email) email = encodeURIComponent(name.split(" ")[0].toLowerCase());
+    else email = encodeURIComponent(email);
+    const query = `institute=${institute}&name=${name}&title=${title}&email=${email}`;
+    window.location.href = `sig.html?${query}`;
+});
+
+</script>
+<script src="/staff-signatures.3464ddca.js"></script></body>
+</html>
