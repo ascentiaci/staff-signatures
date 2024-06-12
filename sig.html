@@ -6,18 +6,18 @@
     <link rel="stylesheet" type="text/css" href="./css/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  
+    
 </head>
 <body>
     <div id="signature" class="signature-container">
         <div class="logo-container">
-            <img src="images/elevare.png?width=150px" alt="Elevare Logo" id="elevareLogo" class="logo d-none">
-            <img src="images/ascentia.png?width=150px" alt="Ascentia Logo" id="ascentiaLogo" class="logo d-none">
+            <img src="images/elevare.png" alt="Elevare Logo" id="elevareLogo" class="logo d-none">
+            <img src="images/ascentia.png" alt="Ascentia Logo" id="ascentiaLogo" class="logo d-none">
         </div>
         <div class="details-container">
             <p class="signature-name-title">
                 <span id="name" class="signature-name">John Doe</span>
-                <span class="separator">&nbsp;|&nbsp;</span>
+                <span class="separator">|</span>
                 <span id="title" class="signature-title">Title</span>
             </p>
             <p><strong class="detail-label">p:</strong> <span id="phone" class="signature-phone">Phone</span></p>
@@ -27,6 +27,9 @@
         </div>
     </div>
     <button id="downloadDocx">Download as DOCX</button>
+    <button id="generateHtml">Generate HTML</button>
+    <textarea id="generatedHtml" rows="10" cols="100"></textarea>
+    <button id="copyHtml">Copy HTML</button>
 
     <script type="module">
         import { Document, Packer, Paragraph, TextRun, ImageRun } from "docx";
@@ -41,7 +44,8 @@
                     emailDomain: 'elevareci.ca',
                     website: 'www.elevareci.ca',
                     address: '200 - 1690 Water Street, Kelowna, BC V1Y 8T8',
-                    colorClass: 'elevare-colors'
+                    colorClass: 'elevare-colors',
+                    color: '#1A73E8',
                 },
                 ascentia: {
                     logoId: 'ascentiaLogo',
@@ -49,7 +53,8 @@
                     emailDomain: 'ascentiaci.ca',
                     website: 'www.ascentiaci.ca',
                     address: '301 -1680 Water Street, Kelowna, BC V1Y 8T8',
-                    colorClass: 'ascentia-colors'
+                    colorClass: 'ascentia-colors',
+                    color: '#A52A2A',
                 }
             };
 
@@ -88,12 +93,12 @@
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
             const dataURL = canvas.toDataURL("image/png");
-            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+            return dataURL;
         }
 
         document.getElementById('downloadDocx').addEventListener('click', () => {
             const logo = document.querySelector('.logo:not(.d-none)');
-            const logoBase64 = getBase64Image(logo);
+            const logoBase64 = getBase64Image(logo).replace(/^data:image\/(png|jpg);base64,/, "");
 
             const doc = new Document({
                 sections: [{
@@ -115,7 +120,7 @@
                                     text: document.getElementById('name').innerText,
                                     bold: true,
                                     size: 24,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '0026C0' : '630A16',
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
                                 }),
                                 new TextRun({
                                     text: ' | ',
@@ -134,7 +139,7 @@
                                 new TextRun({
                                     text: 'p: ',
                                     bold: true,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '0026C0' : '630A16',
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
                                 }),
                                 new TextRun({
                                     text: document.getElementById('phone').innerText,
@@ -146,7 +151,7 @@
                                 new TextRun({
                                     text: 'e: ',
                                     bold: true,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '0026C0' : '630A16',
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
                                 }),
                                 new TextRun({
                                     text: document.getElementById('email').innerText,
@@ -158,7 +163,7 @@
                                 new TextRun({
                                     text: 'w: ',
                                     bold: true,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '0026C0' : '630A16',
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
                                 }),
                                 new TextRun({
                                     text: document.getElementById('website').innerText,
@@ -170,7 +175,7 @@
                                 new TextRun({
                                     text: 'a: ',
                                     bold: true,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '0026C0' : '630A16',
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
                                 }),
                                 new TextRun({
                                     text: document.getElementById('address').innerText,
@@ -184,6 +189,48 @@
             Packer.toBlob(doc).then((blob) => {
                 saveAs(blob, 'signature.docx');
             });
+        });
+
+        document.getElementById('generateHtml').addEventListener('click', () => {
+            const logo = document.querySelector('.logo:not(.d-none)');
+            const logoBase64 = getBase64Image(logo);
+
+            const name = document.getElementById('name').innerText;
+            const title = document.getElementById('title').innerText;
+            const phone = document.getElementById('phone').innerText;
+            const email = document.getElementById('email').innerText;
+            const website = document.getElementById('website').innerText;
+            const address = document.getElementById('address').innerText;
+            const color = document.querySelector('#signature').classList.contains('elevare-colors') ? '#1A73E8' : '#A52A2A';
+
+            const html = `
+                <div style="font-family: Arial, sans-serif; border: 0px solid #ccc; padding: 20px; max-width: 600px; text-align: left;">
+                    <div style="text-align: left; margin-bottom: 10px;">
+                        <img src="${logoBase64}" alt="Logo" style="display: block; width: 200px; height: auto;">
+                    </div>
+                    <div style="padding-left: 0;">
+                        <p style="font-size: 20px; margin-bottom: 10px;">
+                            <span style="color: ${color}; font-weight: bold;">${name}</span>
+                            <span style="margin: 0 8px;">|</span>
+                            <span style="color: grey; font-size: 16px; font-weight: bold;">${title}</span>
+                        </p>
+                        <p><strong style="text-transform: lowercase; font-weight: bold; color: ${color};">p:</strong> ${phone}</p>
+                        <p><strong style="text-transform: lowercase; font-weight: bold; color: ${color};">e:</strong> ${email}</p>
+                        <p><strong style="text-transform: lowercase; font-weight: bold; color: ${color};">w:</strong> ${website}</p>
+                        <p><strong style="text-transform: lowercase; font-weight: bold; color: ${color};">a:</strong> ${address}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('generatedHtml').value = html;
+        });
+
+        document.getElementById('copyHtml').addEventListener('click', () => {
+            const textarea = document.getElementById('generatedHtml');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            alert('HTML code copied to clipboard');
         });
     </script>
 </body>
