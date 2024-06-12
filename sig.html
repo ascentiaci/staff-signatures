@@ -43,12 +43,15 @@
     </div>
     <button id="downloadDocx">Download as DOCX</button>
     <button id="generateHtml">Generate HTML</button>
+    <label for="generatedHtml">Sucks to be you</label>
     <textarea id="generatedHtml" rows="10" cols="100"></textarea>
     <button id="copyHtml">Copy HTML</button>
 
+<div id="preview"></div>
 
     <script type="module">
         import { Document, Packer, Paragraph, TextRun, ImageRun, TabStopType } from "docx";
+        import { renderAsync } from "docx-preview-sync";
         const ehColour = '0026C0';
         const esColour = 'F1B11A';
         const ahColour = '630A16';
@@ -124,7 +127,8 @@
                 const institute = queries.get('institute');
                 const hfont = institute === 'ascentia' ? 'Georgia' : 'Verdana';
                 const bfont = institute === 'ascentia' ? 'Tahoma' : 'Arial';
-                const dataTs = 1150;
+                const dataTs = 1000;
+                const lineSpacingData = 55;
             const doc = new Document({
                 sections: [{
                     children: [
@@ -162,7 +166,7 @@
                                 }),
                             ],
                             spacing: {
-                                        after: 100
+                                        after: lineSpacingData
                                     },
                         }),
                         new Paragraph({
@@ -185,7 +189,7 @@
                                 }
                             ],
                             spacing: {
-                                        after: 100
+                                        after: lineSpacingData
                                     },
                         }),
                         new Paragraph({
@@ -208,7 +212,7 @@
                                 }
                             ],
                             spacing: {
-                                        after: 100
+                                        after: lineSpacingData
                                     },
                         }),
                         new Paragraph({
@@ -231,7 +235,7 @@
                                 }
                             ],
                             spacing: {
-                                        after: 100
+                                        after: lineSpacingData
                                     },
                         }),
                         new Paragraph({
@@ -259,6 +263,8 @@
             });
 
             Packer.toBlob(doc).then((blob) => {
+                let docData = Blob = blob
+                // renderAsync(docData, document.getElementById('preview'));
                 saveAs(blob, `signature-for-${document.getElementById('name').innerText.replaceAll(' ','-')}.docx`);
             });
         });
