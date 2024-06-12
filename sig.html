@@ -11,8 +11,8 @@
 <body>
     <div id="signature" class="signature-container">
         <div class="logo-container">
-            <img src="images/elevare.png" alt="Elevare Logo" id="elevareLogo" class="logo d-none">
-            <img src="images/ascentia.png" alt="Ascentia Logo" id="ascentiaLogo" class="logo d-none">
+            <img src="images/elevare.png?width=200px" alt="Elevare Logo" id="elevareLogo" class="logo d-none">
+            <img src="images/ascentia.png?width=200px" alt="Ascentia Logo" id="ascentiaLogo" class="logo d-none">
         </div>
         <div class="details-container">
             <p class="signature-name-title">
@@ -20,10 +20,25 @@
                 <span class="separator">|</span>
                 <span id="title" class="signature-title">Title</span>
             </p>
-            <p><strong class="detail-label">p:</strong> <span id="phone" class="signature-phone">Phone</span></p>
-            <p><strong class="detail-label">e:</strong> <span id="email" class="signature-email">Email</span></p>
-            <p><strong class="detail-label">w:</strong> <span id="website" class="signature-website">Website</span></p>
-            <p><strong class="detail-label">a:</strong> <span id="address" class="signature-address">Address</span></p>
+            <table>
+            <tr>
+                <td><strong class="detail-label">Phone:</strong></td>
+                <td><span id="phone" class="signature-phone">Phone</span></td>
+            </tr> 
+            <tr>
+                <td><strong class="detail-label">Email:</strong></td>
+                <td><span id="email" class="signature-email">Email</span></td>
+            </tr>
+            <tr>
+                <td><strong class="detail-label">Website:</strong></td>
+                <td><span id="website" class="signature-website">Website</span></td>
+            </tr>
+            <tr>
+                <td><strong class="detail-label">Address:</strong></td>
+                <td><span id="address" class="signature-address">Address</span></td>
+            </tr>
+             
+        </table>
         </div>
     </div>
     <button id="downloadDocx">Download as DOCX</button>
@@ -31,8 +46,14 @@
     <textarea id="generatedHtml" rows="10" cols="100"></textarea>
     <button id="copyHtml">Copy HTML</button>
 
+
     <script type="module">
-        import { Document, Packer, Paragraph, TextRun, ImageRun } from "docx";
+        import { Document, Packer, Paragraph, TextRun, ImageRun, TabStopType } from "docx";
+        const ehColour = '0026C0';
+        const esColour = 'F1B11A';
+        const ahColour = '630A16';
+        const asColour = '8C9DB2';
+
 
         document.addEventListener('DOMContentLoaded', () => {
             const queries = new URLSearchParams(window.location.search);
@@ -45,7 +66,7 @@
                     website: 'www.elevareci.ca',
                     address: '200 - 1690 Water Street, Kelowna, BC V1Y 8T8',
                     colorClass: 'elevare-colors',
-                    color: '#1A73E8',
+                    color: '#0026C0',
                 },
                 ascentia: {
                     logoId: 'ascentiaLogo',
@@ -54,7 +75,7 @@
                     website: 'www.ascentiaci.ca',
                     address: '301 -1680 Water Street, Kelowna, BC V1Y 8T8',
                     colorClass: 'ascentia-colors',
-                    color: '#A52A2A',
+                    color: '#630A16',
                 }
             };
 
@@ -78,7 +99,7 @@
             }
 
             if (name) {
-                document.getElementById('name').innerText = name;
+                document.getElementById('name').innerText = name.toUpperCase();
             }
 
             if (title) {
@@ -94,12 +115,16 @@
             ctx.drawImage(img, 0, 0);
             const dataURL = canvas.toDataURL("image/png");
             return dataURL;
-        }
-
-        document.getElementById('downloadDocx').addEventListener('click', () => {
-            const logo = document.querySelector('.logo:not(.d-none)');
-            const logoBase64 = getBase64Image(logo).replace(/^data:image\/(png|jpg);base64,/, "");
-
+            }
+            
+            document.getElementById('downloadDocx').addEventListener('click', () => {
+                const logo = document.querySelector('.logo:not(.d-none)');
+                const logoBase64 = getBase64Image(logo).replace(/^data:image\/(png|jpg);base64,/, "");
+                const queries = new URLSearchParams(window.location.search);
+                const institute = queries.get('institute');
+                const hfont = institute === 'ascentia' ? 'Georgia' : 'Verdana';
+                const bfont = institute === 'ascentia' ? 'Tahoma' : 'Arial';
+                const dataTs = 1050;
             const doc = new Document({
                 sections: [{
                     children: [
@@ -118,69 +143,104 @@
                             children: [
                                 new TextRun({
                                     text: document.getElementById('name').innerText,
+                                    font: hfont,
                                     bold: true,
                                     size: 24,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? ehColour : ahColour,
                                 }),
                                 new TextRun({
                                     text: ' | ',
+                                    font: hfont,
                                     size: 24,
                                 }),
                                 new TextRun({
                                     text: document.getElementById('title').innerText,
                                     bold: true,
+                                    font: hfont,
                                     size: 24,
-                                    color: '808080',
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? esColour : asColour,
                                 }),
                             ],
                         }),
                         new Paragraph({
                             children: [
                                 new TextRun({
-                                    text: 'p: ',
+                                    text: 'phone:\t',
+                                    font: hfont,
                                     bold: true,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? ehColour : ahColour,
                                 }),
                                 new TextRun({
                                     text: document.getElementById('phone').innerText,
+                                    font: bfont
                                 }),
                             ],
+                            tabStops: [
+                                {
+                                    type: TabStopType.LEFT,
+                                    position: dataTs
+                                }
+                            ]
                         }),
                         new Paragraph({
                             children: [
                                 new TextRun({
-                                    text: 'e: ',
+                                    text: 'email:\t',
                                     bold: true,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
+                                    font: hfont,
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? ehColour : ahColour,
                                 }),
                                 new TextRun({
                                     text: document.getElementById('email').innerText,
+                                    font: bfont
                                 }),
                             ],
+                            tabStops: [
+                                {
+                                    type: TabStopType.LEFT,
+                                    position: dataTs
+                                }
+                            ]
                         }),
                         new Paragraph({
                             children: [
                                 new TextRun({
-                                    text: 'w: ',
+                                    text: 'website:\t',
                                     bold: true,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
+                                    font: hfont,
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? ehColour : ahColour,
                                 }),
                                 new TextRun({
                                     text: document.getElementById('website').innerText,
+                                    font: bfont,
                                 }),
                             ],
+                            tabStops: [
+                                {
+                                    type: TabStopType.LEFT,
+                                    position: dataTs
+                                }
+                            ]
                         }),
                         new Paragraph({
                             children: [
                                 new TextRun({
-                                    text: 'a: ',
+                                    text: 'address:\t',
                                     bold: true,
-                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? '1A73E8' : 'A52A2A',
+                                    font: hfont,
+                                    color: document.querySelector('#signature').classList.contains('elevare-colors') ? ehColour : ahColour,
                                 }),
                                 new TextRun({
                                     text: document.getElementById('address').innerText,
+                                    font: bfont,
                                 }),
                             ],
+                            tabStops: [
+                                {
+                                    type: TabStopType.LEFT,
+                                    position: dataTs
+                                }
+                            ]
                         }),
                     ],
                 }],
@@ -201,10 +261,10 @@
             const email = document.getElementById('email').innerText;
             const website = document.getElementById('website').innerText;
             const address = document.getElementById('address').innerText;
-            const color = document.querySelector('#signature').classList.contains('elevare-colors') ? '#1A73E8' : '#A52A2A';
+            const color = document.querySelector('#signature').classList.contains('elevare-colors') ? '#0026C0' : '#630A16';
 
             const html = `
-                <div style="font-family: Arial, sans-serif; border: 0px solid #ccc; padding: 20px; max-width: 600px; text-align: left;">
+                <div style="font-family: Arial, sans-serif; border: 1px solid #ccc; padding: 20px; max-width: 600px; text-align: left;">
                     <div style="text-align: left; margin-bottom: 10px;">
                         <img src="${logoBase64}" alt="Logo" style="display: block; width: 200px; height: auto;">
                     </div>
@@ -214,10 +274,24 @@
                             <span style="margin: 0 8px;">|</span>
                             <span style="color: grey; font-size: 16px; font-weight: bold;">${title}</span>
                         </p>
-                        <p><strong style="text-transform: lowercase; font-weight: bold; color: ${color};">p:</strong> ${phone}</p>
-                        <p><strong style="text-transform: lowercase; font-weight: bold; color: ${color};">e:</strong> ${email}</p>
-                        <p><strong style="text-transform: lowercase; font-weight: bold; color: ${color};">w:</strong> ${website}</p>
-                        <p><strong style="text-transform: lowercase; font-weight: bold; color: ${color};">a:</strong> ${address}</p>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="color: ${color}; font-weight: bold; text-align: right;">Phone:</td>
+                                <td>${phone}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: ${color}; font-weight: bold; text-align: right;">Email:</td>
+                                <td>${email}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: ${color}; font-weight: bold; text-align: right;">Website:</td>
+                                <td>${website}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: ${color}; font-weight: bold; text-align: right;">Address:</td>
+                                <td>${address}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             `;

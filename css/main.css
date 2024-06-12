@@ -1,7 +1,9 @@
 /* Define color variables */
 :root {
     --elevare-color: #0026C0; /* Example blue color */
+    --elevare-title: #F1B11A;
     --ascentia-color: #630A16; /* Example brown color */
+    --ascentia-title: #8C9DB2;
     --title-color: grey;
 }
 
@@ -71,7 +73,7 @@ body {
 }
 
 .elevare-colors .signature-title {
-    color: var(--title-color);
+    color: var(--elevare-title);
     font-size: 16px;
     font-weight: bold;
 }
@@ -86,11 +88,15 @@ body {
 }
 
 .ascentia-colors .signature-title {
-    color: var(--title-color);
+    color: var(--ascentia-title);
     font-size: 16px;
     font-weight: bold;
 }
 
 .d-none {
     display: none;
+}
+
+tr {
+    padding-top:10px
 }
