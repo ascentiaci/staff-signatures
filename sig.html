@@ -161,6 +161,9 @@
                                     color: document.querySelector('#signature').classList.contains('elevare-colors') ? esColour : asColour,
                                 }),
                             ],
+                            spacing: {
+                                        after: 100
+                                    },
                         }),
                         new Paragraph({
                             children: [
@@ -180,7 +183,10 @@
                                     type: TabStopType.LEFT,
                                     position: dataTs
                                 }
-                            ]
+                            ],
+                            spacing: {
+                                        after: 100
+                                    },
                         }),
                         new Paragraph({
                             children: [
@@ -200,7 +206,10 @@
                                     type: TabStopType.LEFT,
                                     position: dataTs
                                 }
-                            ]
+                            ],
+                            spacing: {
+                                        after: 100
+                                    },
                         }),
                         new Paragraph({
                             children: [
@@ -220,7 +229,10 @@
                                     type: TabStopType.LEFT,
                                     position: dataTs
                                 }
-                            ]
+                            ],
+                            spacing: {
+                                        after: 100
+                                    },
                         }),
                         new Paragraph({
                             children: [
@@ -247,7 +259,7 @@
             });
 
             Packer.toBlob(doc).then((blob) => {
-                saveAs(blob, 'signature.docx');
+                saveAs(blob, `signature-for-${document.getElementById('name').innerText.replaceAll(' ','-')}.docx`);
             });
         });
 
