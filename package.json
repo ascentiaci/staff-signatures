@@ -2,10 +2,10 @@
   "name": "github-pages-hosting-with-parcel",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
-    "predeploy": "rm -rf dist && parcel build index.html --public-url hhttps://ascentiaci.github.io/staff-signatures/",
+    "build": "parcel build index.html --public-url https://ascentiaci.github.io/staff-signatures/",
+    "predeploy": "rm -rf dist && parcel build index.html --public-url https://ascentiaci.github.io/staff-signatures/",
     "deploy": "gh-pages -d dist"
   },
   "repository": {
